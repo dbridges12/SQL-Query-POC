@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html ng-app="coin">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimal-ui"/>
+
+        <title>CoinAlytics BlockStem</title>
+
+        <link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800"
+              rel="stylesheet" type="text/css">
+        <link rel="stylesheet" href="resources/styles/main.css" type="text/css">
+        <link rel="stylesheet" href="resources/styles/style.css" type="text/css">
+        <link rel="stylesheet" href="resources/styles/normalize.css" type="text/css">
+        <link rel="stylesheet" href="resources/styles/ui-grid.css" type="text/css">
+        <link rel="stylesheet" href="resources/styles/font-awesome.min.css" type="text/css">
+        <link rel="stylesheet" href="resources/styles/bootstrap.css" type="text/css">
+        <link rel="stylesheet" href="resources/styles/bootstrap-theme.css" type="text/css">
+
+    </head>
+    <body data-ng-controller="QueryController as qc">
+        <header class='headerbar'> <!-- header bar -->
+            <img src="resources/images/ca_logo.png" alt="CoinAlytics logo" height="40">
+        </header>
+
+        <section class="queryBuilder">
+            <!-- Select an API endpoint for the query -->
+            <div>
+                <h4 class="stem-queries">BlockStem API Queries</h4>
+                <select data-ng-options="q.name as q.name for q in qc.queries"
+                        data-ng-model="qc.selectedQuery"
+                        data-ng-change="qc.showSelected()"
+                        class="input-sm stem-queries">
+                </select>
+
+                <button
+                        type="button"
+                        class="btn btn-sm btn-success stem-queries"
+                        data-ng-click="qc.runQuery()">
+                    <span data-ng-hide="qc.queryLoading">Execute</span> 
+                    <span data-ng-show="qc.queryLoading">Executing <i class="fa fa-spinner fa-spin"></i></span> 
+                </button>
+            </div>
+
+            <!-- Show how the query string will look -->
+            <div class="alert alert-success">
+                <strong>Query Filter</strong><br>
+                <span data-ng-bind-html="output"></span>
+            </div>
+
+            <!-- Query Builder Directive to add fields, groups and conditions -->
+            <query-builder group="filter.filterGroup"></query-builder>
+
+        </section>
+
+        <div class="grid"> 
+            <h3>{{qc.selectedQuery}} Query Results</h3>
+            <div data-ui-grid="qc.gridOptions"
+                 data-ui-grid-resize-columns
+                 data-ui-grid-move-columns
+                 data-ui-grid-core>
+            </div>
+            <svg class="chart"></svg>
+         </div>
+
+        <script src="resources/libs/angular.js"></script>
+        <script src="resources/libs/angular-sanitize.js"></script>
+        <script src="resources/libs/d3.js"></script>
+        <script src="resources/libs/ui-grid.js"></script>
+        <!-- ********************************************* -->
+        <script src="app/app.js"></script>
+        <script src="app/services/blockQueryService.js"></script>
+        <script src="app/services/transactionQueryService.js"></script>
+        <script src="app/services/clustAddrHashQueryService.js"></script>
+        <script src="app/services/labelTypeQueryService.js"></script>
+        <script src="app/services/labeledAddrQueryService.js"></script>
+        <script src="app/services/labelAggQueryService.js"></script>
+        <script src="app/directives/queryBuilder.js"></script>
+        <script src="app/query.controller.js"></script>
+    </body>
+</html>
+
+
+
